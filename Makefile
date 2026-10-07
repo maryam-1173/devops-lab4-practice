@@ -12,48 +12,6 @@
 SRC_DIR := src
 OUT_DIR := out
 
-# TODO 1: set SOURCES to every .txt file in $(SRC_DIR), using $(wildcard).
-SOURCES :=
-
-# TODO 2: set OUTPUTS to the matching paths under $(OUT_DIR), using $(patsubst).
-OUTPUTS :=
-
-# TODO 3: list every action target here so make never mistakes one for a file.
-.PHONY:
-
-# The first target in the file is what a bare `make` runs.
-all: test
-
-$(OUT_DIR):
-	mkdir -p $(OUT_DIR)
-
-# TODO 4: the pattern rule. Announce the file with @echo, then convert it.
-#         Use $< for the input and $@ for the output — no filenames by hand.
-#         Keep the order-only prerequisite  | $(OUT_DIR)  exactly as it is.
-$(OUT_DIR)/%.txt: $(SRC_DIR)/%.txt | $(OUT_DIR)
-
-# TODO 5: check — exit non-zero with a clear message when $(SRC_DIR) is
-#         missing or holds no .txt files; otherwise report how many were
-#         found. Hint: `test -d`, `$(words $(SOURCES))`, and remember that
-#         each recipe line runs in its own shell.
-check:
-
-# The whole build stage. Nothing to add here — this line is the lesson.
-build: $(OUTPUTS)
-
-# TODO 6: test — depend on build, then fail if any output still contains a
-#         lowercase letter. A multi-line if needs a backslash on every line
-#         but the last. Print TEST PASSED on success.
-test: build
-
-# TODO 7: clean — remove $(OUT_DIR) entirely.
-clean:
-
-# A build server's entry point: clean, verify, then build and test.
-ci: clean check test
-SRC_DIR := src
-OUT_DIR := out
-
 SOURCES := $(wildcard $(SRC_DIR)/*.txt)
 OUTPUTS := $(patsubst $(SRC_DIR)/%.txt,$(OUT_DIR)/%.txt,$(SOURCES))
 
@@ -96,5 +54,7 @@ ci:
 	@$(MAKE) clean
 	@$(MAKE) check
 	@$(MAKE) test
-count: build  ## count the source files
+
+count: build  ## report source files and built words
 	@ls -1 $(SRC_DIR)/*.txt | wc -l
+	@wc -w $(OUTPUTS) | tail -1
