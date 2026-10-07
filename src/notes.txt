@@ -1,0 +1,9 @@
+make rebuilds only what changed
+timestamps decide, not contents
+phony targets always run
+order-only prerequisites use a pipe
+a new line
+incremental test line
+incremental run 1
+incremental run 2
+incremental run 3
